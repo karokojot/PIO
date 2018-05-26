@@ -6,6 +6,7 @@
 package gra;
 
 import java.util.Random;
+import java.util.Scanner;
 
 
 /**
@@ -18,20 +19,43 @@ public class Gra {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        System.out.println("Rzuć kośćmi: ");
-        Player player = new Player();
-        Random r = new Random();
+        Random dice = new Random();
+        Scanner sc = new Scanner(System.in);
         
-        boolean match = false;
-        while (!match){
-            int number = r.nextInt(6)+1;
-            int guess = player.guess();
-            
-            System.out.println("wyrzucona liczba: " + number + " zgadł: " + guess);
-            
-            if (number == guess)
-                match = true;
+
+        Player player = new PlayerHuman();
+        
+        while(true){
+            System.out.print("Wprowadź imię gracza: ");
+            String name = sc.nextLine();
+            try{
+                player.setName(name);
+            }
+            catch(IllegalArgumentException e){
+                System.out.println("Nazwa ma zawierac co najmniej 2 litery i byc bez spacji. ");
+                continue;
+            }
+            break;
         }
+        
+        int number, guess = 1;
+        
+        do {
+            number = dice.nextInt(6) + 1;
+            System.out.println("Wylosowane: " + number);
+            
+            guess = player.guess();
+                    
+            System.out.println("Gracz: " + player.getName() + " zgadł liczbę: " + guess);
+            
+            if (number != guess) {
+                System.out.println("ŹLE!");
+            } else {
+                System.out.println("DOBRZE!");
+            }
+            
+        } while (number != guess);
+
         // TODO code application logic here
     }
     
